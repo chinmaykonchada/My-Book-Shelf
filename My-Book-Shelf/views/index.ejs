@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My-Book-Shelf</title>
+</head>
+<body>
+    <h1>hi there</h1>
+    <% allbooks.forEach(book => { %>
+        <div class="book">
+            <img src="" alt="" class="cover">
+            <p class="title"> <%= book.title %> </p>
+            <p class="timestamp"><%= book.timestamp %></p>
+            <p class="rating"><%= book.rating %></p>
+            <p class="description"><%= book.description %></p>
+            <p class="notes"><%= book.notes %></p>
+        </div>
+    <% }); %>
+</body>
+</html>

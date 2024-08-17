@@ -1,0 +1,17 @@
+{
+  "name": "cap5-my-book-shelf",
+  "version": "1.0.0",
+  "description": "I read a lot of books but after I finish reading them I often don't remember all the most salient parts of the book. So I started taking notes.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2"
+  }
+}
