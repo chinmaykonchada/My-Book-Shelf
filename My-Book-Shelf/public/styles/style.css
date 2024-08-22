@@ -1,0 +1,7 @@
+.title, .book {
+    background-color: pink;
+}
+.wrap {
+    float: right; 
+    margin: 5px;
+   }
