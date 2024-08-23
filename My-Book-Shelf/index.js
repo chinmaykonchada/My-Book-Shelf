@@ -24,8 +24,14 @@ let books=[
 
 app.get('/', async (req, res) => {
     const result=await db.query("SELECT title, lastedited, rating, description FROM books");
-    // console.log(result);
-    books=result.rows;
+    // console.log(result.rows);
+    books=result.rows.map(book => {
+        const date=new Date(book.lastedited);
+        return {
+            ...book,
+            lastedited: date.toLocaleDateString()
+        };
+    });
     res.render("index.ejs", {allbooks: books});
 })
 
