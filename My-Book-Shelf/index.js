@@ -24,11 +24,11 @@ app.get('/', async (req, res) => {
     try {
         // This line starts a try-catch block to handle potential errors in the following code
         
-        const result = await db.query("SELECT title, lastedited, rating, description, isbn FROM books");
+        const result = await db.query("SELECT id, title, lastedited, rating, description, isbn FROM books");
         // This line performs an asynchronous database query
         // It selects specific columns (title, lastedited, rating, description, isbn) from the 'books' table
         // The result is stored in the 'result' variable
-        
+        // console.log(typeof(result.rows));
         const books = result.rows.map(book => {
             // This starts a mapping operation on the rows returned by the database query
             // For each book in the result, we're creating a new object
@@ -84,8 +84,39 @@ app.get('/', async (req, res) => {
         res.status(500).send('An error occurred');
         // A 500 (Internal Server Error) response is sent to the client
     }
-})
+});
+
+app.get("/book/:id", async(req, res) => {
+    const id=req.params.id;
+    // console.log(id);
+    try{
+        const result = await db.query("SELECT id, title, lastedited, rating, description, isbn FROM books WHERE id=$1", [id]);
+        const book=result.rows[0];
+        const date = new Date(book.lastedited);
+        book.lastedited=date.toLocaleDateString();
+        try{
+            const response = await axios.get(`https://covers.openlibrary.org/b/ISBN/${book.isbn}-M.jpg`, {
+                responseType: 'arraybuffer'
+            });
+            const base64Image = Buffer.from(response.data, 'binary').toString('base64');
+            book.coverImage=`data:image/jpeg;base64,${base64Image}`;
+        }catch{
+            console.error(`Failed to fetch cover for ${book.title}:`, error);                
+            book.coverImage=null;
+        }
+        // console.log(book);
+        // notes
+        const notesresult=await db.query("SELECT * FROM notesofbooks WHERE id=$1", [id]);
+        //
+        // console.log(notesresult.rows[0].notes);
+        book.notes=notesresult.rows[0].notes; // new property with key as notes and value as notes fetched form the database.
+        res.render("book.ejs", {book: book})
+    }catch(error){
+        console.error('Error:', error);
+        res.status(500).send('An error occurred');
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-})
+});
