@@ -14,5 +14,10 @@ body {
 }
 
 .bookdiv{
-    min-height: 280px;
+    min-height: 310px;
+}
+
+.preserve-format {
+    white-space: pre-line;  /* Preserves line breaks and wraps text */
+    word-wrap: break-word;  /* Ensures long words don't overflow */
 }

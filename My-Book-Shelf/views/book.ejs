@@ -17,10 +17,10 @@
         <img class="float-start mx-3" src="<%= book.coverImage %>" alt="book-cover" width="" height="20%" >
             <h5 class="mb-0 mx-3"><%= book.title %></h5>
             <p class="mb-0 mx-3 opacity-75"><%= book.lastedited %>. How strongly I recommend it: <%= book.rating %>/10</p>
-            <p class="mb-0 mx-3 description"><%= book.description %></p>
+            <p class="mb-0 mx-3 description preserve-format"><%= book.description %></p>
             <br>
             <h3 class="mb-0 mx-3">My notes</h3>
-            <p class="mb-0 mx-3 notes"><%= book.notes %></p>
+            <p class="mb-0 mx-3 notes preserve-format"><%= book.notes %></p>
       </div>
       <a href="edit/<%= book.id %>"><button type="button" class="btn btn-primary">Edit</button></a>
       <a href="delete/<%= book.id %>"><button type="button" class="btn btn-danger">Delete</button></a>
