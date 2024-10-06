@@ -12,19 +12,18 @@
 
 <body>
   <div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
-    <div class="col-8">
+    <div class="col-8 ">
       <% allbooks.forEach(book=> { %>
-        <div class="bg-primary-subtle rounded-3 gap-3 py-3 my-3">
+        <div class="bg-primary-subtle rounded-3 gap-3 py-3 my-3 bookdiv">
           <img class="float-start mx-3" src="<%= book.coverImage %>" alt="book-cover" width="" height="20%" >
           <a href="book/<%= book.id %>"><h5 class="mb-0 mx-3"><%= book.title %></h5></a>
           <p class="mb-0 mx-3 opacity-75"><%= book.lastedited %>. How strongly I recommend it: <%= book.rating %>/10</p>
-          <p class="mb-0 mx-3 description"><%= book.description %>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+          <p class="mb-0 mx-3 description"><%= book.description %></p>
         </div>
         <% }); %>
     </div>
   </div>
-  <img class="addnewnotesicon" src="images\plus-circle.svg" alt="">
+  <a href="/addbook"><img class="addnewnotesicon" src="images\plus-circle.svg" alt=""></a>
   </body>
-  
 </html>
 

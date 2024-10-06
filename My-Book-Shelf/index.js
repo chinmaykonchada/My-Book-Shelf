@@ -117,6 +117,82 @@ app.get("/book/:id", async(req, res) => {
     }
 });
 
+app.get("/addbook", (req, res) => {
+    res.render("addbook.ejs");
+});
+
+app.post("/book-added", async(req, res) => {
+    // console.log(req.body);
+    try{
+        await db.query("INSERT INTO books (title, lastedited, rating, description, isbn) VALUES ($1, $2, $3, $4, $5)", [req.body.title, req.body.publishDate, req.body.rating, req.body.summary, req.body.isbn]);
+        await db.query("INSERT INTO notesofbooks (id, notes) VALUES ((SELECT id FROM books WHERE title=$1), $2)", [req.body.title, req.body.notes]);
+    }catch(error){
+        console.error('Error:', error);
+        res.status(500).send('An error occurred');
+    }
+    res.redirect("/");
+});
+
+app.get("/book/delete/:id", async(req, res) => {
+    const id=req.params.id;
+    try{
+        await db.query("DELETE FROM books WHERE id=$1", [id]);
+        await db.query("DELETE FROM notesofbooks WHERE id=$1", [id]);
+    }catch(error){
+        console.error('Error:', error);
+        res.status(500).send('An error occurred');
+    }
+    res.redirect("/");
+});
+
+app.get("/book/edit/:id", async(req, res) => {
+    const id = req.params.id;
+    try {
+        const result = await db.query(
+            "SELECT books.*, notesofbooks.notes FROM books LEFT JOIN notesofbooks ON books.id = notesofbooks.id WHERE books.id=$1",
+            [id]
+        );
+        const book = result.rows[0];
+        // if you want to show the cover image of the book
+        // try {
+        //     const response = await axios.get(`https://covers.openlibrary.org/b/ISBN/${book.isbn}-M.jpg`, {
+        //         responseType: 'arraybuffer'
+        //     });
+        //     const base64Image = Buffer.from(response.data, 'binary').toString('base64');
+        //     book.coverImage = `data:image/jpeg;base64,${base64Image}`;
+        // } catch (error) {
+        //     console.error(`Failed to fetch cover for ${book.title}:`, error);
+        //     book.coverImage = null;
+        // }
+        
+        res.render("edit.ejs", { book: book });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('An error occurred');
+    }
+});
+
+app.patch("/book/edit/:id", async(req, res) => {
+    const id = req.params.id;
+    try {
+        // Update the book details
+        await db.query(
+            "UPDATE books SET title=$1, lastedited=$2, rating=$3, description=$4, isbn=$5 WHERE id=$6",
+            [req.body.title, req.body.publishDate, req.body.rating, req.body.summary, req.body.isbn, id]
+        );
+        
+        // Update the notes
+        await db.query(
+            "UPDATE notesofbooks SET notes=$1 WHERE id=$2",
+            [req.body.notes, id]
+        );    
+        res.sendStatus(200);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('An error occurred');
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

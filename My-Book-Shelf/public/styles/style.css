@@ -12,3 +12,7 @@ body {
     border-radius: 50%;
     cursor: pointer;
 }
+
+.bookdiv{
+    min-height: 280px;
+}
